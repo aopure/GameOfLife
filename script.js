@@ -17,6 +17,13 @@ let showGrid = gridCheckbox.checked;
 let cells = new Array(GRID_SIZE*GRID_SIZE).fill(false);
 let tempcells = new Array(GRID_SIZE*GRID_SIZE).fill(false);
 
+function fillRandom() {
+  for(let i=0; i<cells.length; i++) {
+    cells[i] = Math.random() > 0.7 ? true : false;
+  }
+  draw();
+}
+
 function indexOf(x, y) {
   return x + y*GRID_SIZE;
 }
@@ -47,7 +54,6 @@ function update() {
   }
 
   [cells, tempcells] = [tempcells, cells];
-  tempcells = tempcells.fill(false);
 
   if(!isRunning) draw();
 }
@@ -137,7 +143,6 @@ canvas.addEventListener('click', (ev) => {
 
   const i = indexOf(x, y);
   if(!isRunning) {
-    tempcells[i] = !cells[i];
     cells[i] = !cells[i];
   }
   draw();
