@@ -1,6 +1,8 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+const pauseBtn = document.getElementById('pauseButton');
+
 const W = canvas.width = 500;
 const H = canvas.height = 500;
 
@@ -76,12 +78,29 @@ function loop(time) {
 
 function pause() {
   isRunning = false;
+  pauseBtn.textContent = 'Start';
 }
 
 function start() {
   if(isRunning) return;
   isRunning = true;
+  pauseBtn.textContent = 'Pause';
   loop();
+}
+
+function toggle() {
+  if(isRunning) {
+    pause();
+  } else {
+    start();
+  }
+}
+
+function reset() {
+  pause();
+  cells.fill(false);
+  tempcells.fill(false);
+  draw();
 }
 
 draw();
