@@ -2,6 +2,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const pauseBtn = document.getElementById('pauseButton');
+const gridCheckbox = document.getElementById('gridCheckbox');
 
 const W = canvas.width = 500;
 const H = canvas.height = 500;
@@ -10,6 +11,8 @@ const SIZE = 10;
 const GRID_SIZE = W/SIZE;
 
 let isRunning = false;
+
+let showGrid = gridCheckbox.checked;
 
 let cells = new Array(GRID_SIZE*GRID_SIZE).fill(false);
 let tempcells = new Array(GRID_SIZE*GRID_SIZE).fill(false);
@@ -45,6 +48,20 @@ function update() {
 
   [cells, tempcells] = [tempcells, cells];
   tempcells = tempcells.fill(false);
+
+  if(!isRunning) draw();
+}
+
+function line(fromX, fromY, toX, toY) {
+  ctx.save();
+  ctx.strokeStyle = 'rgb(123, 123, 123)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(fromX, fromY);
+  ctx.lineTo(toX, toY);
+  ctx.stroke();
+  ctx.closePath();
+  ctx.restore();
 }
 
 function draw() {
@@ -57,12 +74,11 @@ function draw() {
       if(!cells[indexOf(j, i)]) continue;
       ctx.fillRect(SIZE*j, SIZE*i, SIZE, SIZE);
     }
+    if(showGrid) {
+      line(i*SIZE, 0, i*SIZE, H);
+      line(0, i*SIZE, W, i*SIZE);
+    }
   }
-}
-
-function ud() {
-  update();
-  draw();
 }
 
 let lastUpdate = 0;
@@ -88,12 +104,22 @@ function start() {
   loop();
 }
 
-function toggle() {
+function togglePause() {
   if(isRunning) {
     pause();
   } else {
     start();
   }
+}
+
+function toggleGrid(el) {
+  if(el.checked) {
+    showGrid = true;
+  } else {
+    showGrid = false;
+  }
+
+  draw();
 }
 
 function reset() {

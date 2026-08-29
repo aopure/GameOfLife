@@ -18,4 +18,10 @@ body {
 
 #buttons {
   display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+label {
+  color: white;
 }
